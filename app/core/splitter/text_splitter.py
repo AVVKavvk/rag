@@ -8,6 +8,9 @@ from app.utils.logger import logger
 TEMP_DIR = "/tmp/rag_uploads"
 os.makedirs(TEMP_DIR, exist_ok=True)
 
+CHUNK_SIZE = os.getenv("CHUNK_SIZE") or 700
+CHUNK_OVERLAP = os.getenv("CHUNK_OVERLAP") or 200
+
 
 def load_and_split_from_s3(s3_key: str, filename: str):
     """
