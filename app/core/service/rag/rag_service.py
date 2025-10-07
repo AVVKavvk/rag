@@ -13,8 +13,9 @@ class RagService():
     async def generate_embedding_service(self, file_data: bytes, filename: str, content_type: str):
         try:
             self.logger.info(f"Generating embedding for {filename}")
-
+            self.logger.info("Uploading file to S3")
             s3_key = upload_file_to_s3(self.org_id, file_data, filename, content_type)
+            self.logger.info("File uploaded to S3")
 
             self.logger.info(f"Generating chunks for {filename}")
 

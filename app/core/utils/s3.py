@@ -62,11 +62,11 @@ def download_file_from_s3(s3_key: str, local_path: str):
         raise e
 
 
-def delete_file_from_local(s3_key: str, local_path: str):
+def delete_file_from_local(local_path: str):
     try:
-        logging.info(f"Deleting {s3_key} from {local_path}")
-        os.remove(f"{local_path}/{s3_key}")
-        logging.info(f"Deleted {s3_key} from {local_path}")
+        logging.info(f"Deleting {local_path}")
+        os.remove(local_path)
+        logging.info(f"Deleted {local_path}")
     except Exception as e:
-        logging.error(f"Failed to delete {s3_key} from {local_path}: {e}")
+        logging.error(f"Failed to delete {local_path}: {e}")
         raise

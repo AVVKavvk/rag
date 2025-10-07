@@ -6,11 +6,15 @@ from app.core.helper.db_info import get_db_info
 
 
 class RagApi:
-    async def __init__(self, org_id: str):
+    def __init__(self, org_id: str):
         self.logger = logger
         self.org_id = org_id
         self.service = RagService(org_id=org_id)
+
+    async def initialize(self):
+        self.service = RagService(org_id=self.org_id)
         await self.get_db_name()
+        return self
 
     async def get_db_name(self):
         try:

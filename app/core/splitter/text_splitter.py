@@ -15,7 +15,8 @@ def load_and_split_from_s3(s3_key: str, filename: str):
     split it into individual pages, and return the pages as a list of strings.
     """
     try:
-        local_path = os.path.join(TEMP_DIR, f"{uuid.uuid4()}_{filename}")
+        # Create full local path including the filename
+        local_path = os.path.join(TEMP_DIR, f"{uuid.uuid4()}-{filename}")
         logger.info(f"Downloading {s3_key} to {local_path}")
 
         download_file_from_s3(s3_key, local_path)
@@ -46,7 +47,7 @@ def load_and_split_from_s3(s3_key: str, filename: str):
         for chunk in chunks:
             chunk.metadata["source"] = filename
 
-        delete_file_from_local(s3_key, local_path)
+        delete_file_from_local(local_path)
         return chunks
 
     except Exception as e:
