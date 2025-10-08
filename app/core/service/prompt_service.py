@@ -20,6 +20,8 @@ class PromptService:
     async def create_prompt_service(self, prompt: PromptSchema):
         try:
             collection = self.mongo_client[self.db_name][PROMPT_COLLECTION]
+            prompt.created_at = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            prompt.updated_at = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
             result = await collection.insert_one(prompt.model_dump(exclude_unset=True, exclude_none=True))
             prompt.id = str(result.inserted_id)
             return prompt

@@ -1,4 +1,3 @@
-from numpy import ogrid
 from app.core.schema.db_info_schema import DBInfo
 from app.core.schema.embedded_document_schema import SearchQuery
 from app.core.schema.rag_schema import RagDocumentCreate
