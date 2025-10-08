@@ -8,8 +8,8 @@ from app.utils.logger import logger
 TEMP_DIR = "/tmp/rag_uploads"
 os.makedirs(TEMP_DIR, exist_ok=True)
 
-CHUNK_SIZE = os.getenv("CHUNK_SIZE") or 700
-CHUNK_OVERLAP = os.getenv("CHUNK_OVERLAP") or 200
+CHUNK_SIZE = int((os.getenv("CHUNK_SIZE")) or 1000)
+CHUNK_OVERLAP = int(os.getenv("CHUNK_OVERLAP") or 200)
 
 
 def load_and_split_from_s3(s3_key: str, filename: str):
@@ -34,7 +34,7 @@ def load_and_split_from_s3(s3_key: str, filename: str):
         else:
             raise ValueError("Unsupported file type")
 
-        logger.info(f"Splitting {s3_key} into chunks of 500 tokens with 100 token overlap")
+        logger.info(f"Splitting {s3_key} into chunks of {CHUNK_SIZE} tokens with {CHUNK_OVERLAP} overlap")
 
         docs = loader.load()
 
@@ -42,7 +42,7 @@ def load_and_split_from_s3(s3_key: str, filename: str):
         for doc in docs:
             doc.page_content = doc.page_content.lower()
 
-        splitter = RecursiveCharacterTextSplitter(chunk_size=500, chunk_overlap=100)
+        splitter = RecursiveCharacterTextSplitter(chunk_size=CHUNK_SIZE, chunk_overlap=CHUNK_OVERLAP)
         chunks = splitter.split_documents(docs)
 
         logger.info(f"Split {s3_key} into {len(chunks)} chunks")
